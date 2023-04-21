@@ -1,8 +1,20 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
+
+DateFormat formatter = DateFormat('d/M/y');
 
 const uuid = Uuid();
 
 enum Category { food, travel, leisure, work } // enum creates a custom data type
+
+const categoryIcons = {
+  Category.food: Icons.lunch_dining,
+  Category.travel: Icons.flight_takeoff,
+  Category.leisure: Icons.movie,
+  Category.work: Icons.work,
+};
 
 class Expense {
   Expense(
@@ -17,4 +29,9 @@ class Expense {
   final double amount;
   final DateTime date;
   final Category category; // Category is the custom data type created above
+
+  String get formattedDate {
+    return formatter.format(
+        date); // use the formatter created above to re-format the date at compile time
+  }
 }
