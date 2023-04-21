@@ -12,6 +12,18 @@ class _NewExpenseState extends State<NewExpense> {
   final _amountController = TextEditingController();
   // dung de quan ly text user input
 
+  void _presentDatePicker() {
+    final initialDate = DateTime.now();
+    final firstDate = DateTime(2000, 1, 1);
+    final lastDate =
+        DateTime(initialDate.year + 10, initialDate.month, initialDate.day);
+    showDatePicker(
+        context: context,
+        initialDate: initialDate,
+        firstDate: firstDate,
+        lastDate: lastDate);
+  }
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -31,14 +43,39 @@ class _NewExpenseState extends State<NewExpense> {
             label: Text('Title'),
           ),
         ),
-        TextField(
-          controller: _amountController,
-          keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
-            prefixText:
-                '\$ ', // text nay se tu dong them vao khi nguoi dung click vao TextField, tuy nhien se khong duoc luu lai
-            label: Text('Amount'),
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _amountController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  prefixText:
+                      '\$ ', // text nay se tu dong them vao khi nguoi dung click vao TextField, tuy nhien se khong duoc luu lai
+                  label: Text('Amount'),
+                ),
+              ),
+            ),
+            // TextField khi duoc cho vao children cua Row phai bao trong Extended neu khong se bi loi (yea i don't get it either)
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                // align the contents to the right
+                crossAxisAlignment: CrossAxisAlignment.center,
+                // center the contents vertically
+                children: [
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Text('Selected Date'),
+                  IconButton(
+                    onPressed: _presentDatePicker,
+                    icon: const Icon(Icons.calendar_month),
+                  )
+                ],
+              ),
+            )
+          ],
         ),
         const SizedBox(
           height: 20,
@@ -53,7 +90,12 @@ class _NewExpenseState extends State<NewExpense> {
               child: const Text('Save Expense'),
             ),
             const Spacer(),
-            TextButton(onPressed: () {}, child: const Text('Cancel')),
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  // close context (co nghia la close nguyen Widget build(BuildContext context))
+                },
+                child: const Text('Cancel')),
           ],
         ),
       ]),
