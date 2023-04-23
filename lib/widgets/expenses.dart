@@ -29,6 +29,7 @@ class _ExpensesState extends State<Expenses> {
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
+        isScrollControlled: true, // make the sheet fullscreen
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
