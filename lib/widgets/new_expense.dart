@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import '../models/expense.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({super.key, required this.onSaveExpense});
+
+  final void Function(Expense expense) onSaveExpense;
 
   @override
   State<NewExpense> createState() => _NewExpenseState();
@@ -33,6 +35,44 @@ class _NewExpenseState extends State<NewExpense> {
       _selectedDate = pickedDate;
     });
     print(pickedDate);
+  }
+
+  void _submitExpenseData() {
+    final enteredAmount = double.tryParse(_amountController
+        .text); // tryParse('Hello') => null, tryParse('1.12') => 1.12
+    final isAmountInvalid = enteredAmount == null ||
+        enteredAmount <
+            0; // isAmountInvalid = false if enteredAmount == null or enteredAmount < 0
+    if (_titleController.text.trim().isEmpty ||
+        isAmountInvalid ||
+        _selectedDate == null ||
+        _selectedCategory == null)
+    // trim is a built in function to remove white spaces at the start and end of a string
+    // also we use isEmpty instead of == null
+    {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Alert'),
+          content: const Text('Invalid input data'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context); // close AlertDialog
+                },
+                child: const Text('Close'))
+          ],
+        ),
+      );
+      return;
+    }
+
+    // ...
+    widget.onSaveExpense(Expense(
+        title: _titleController.text,
+        amount: double.parse(_amountController.text),
+        date: _selectedDate!,
+        category: _selectedCategory!));
   }
 
   @override
@@ -127,17 +167,14 @@ class _NewExpenseState extends State<NewExpense> {
           Row(
             children: [
               ElevatedButton(
-                onPressed: () {
-                  print(_titleController.text);
-                  print(_amountController.text);
-                },
+                onPressed: _submitExpenseData,
                 child: const Text('Save Expense'),
               ),
               const Spacer(),
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    // close context (co nghia la close nguyen Widget build(BuildContext context))
+                    // Navigator.pop(context) co nghia la close nguyen Widget build(BuildContext context)
                   },
                   child: const Text('Cancel')),
             ],
