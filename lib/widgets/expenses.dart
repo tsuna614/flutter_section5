@@ -42,34 +42,56 @@ class _ExpensesState extends State<Expenses> {
   }
 
   void _removeExpense(Expense expense) {
+    final deletedExpenseIndex = _registeredExpenses.indexOf(expense);
     setState(() {
       _registeredExpenses.remove(expense);
     });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    // remove any snackbar that is on screen before creating a new snackbar
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: const Duration(seconds: 5),
+        content: const Text("Expense deleted."),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            setState(() {
+              _registeredExpenses.insert(deletedExpenseIndex, expense);
+            });
+          },
+        )));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: const Text(
-            "Flutter Expense Tracker",
-          ),
-          actions: [
-            IconButton(
-              onPressed: _openAddExpenseOverlay,
-              icon: const Icon(Icons.add),
+        appBar: AppBar(
+            title: const Text(
+              "Flutter Expense Tracker",
             ),
-          ]),
-      body: Column(
-        children: [
-          const Text("The chart"),
-          Expanded(
-              child: ExpensesList(
-            expenses: _registeredExpenses,
-            onDismissExpense: _removeExpense,
-          )),
-        ],
-      ),
-    );
+            actions: [
+              IconButton(
+                onPressed: _openAddExpenseOverlay,
+                icon: const Icon(Icons.add),
+              ),
+            ]),
+        body: _registeredExpenses.isNotEmpty
+            ? Column(
+                children: [
+                  Container(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                      child: const Text(
+                        "The chart",
+                        style: TextStyle(fontSize: 20),
+                      )),
+                  Expanded(
+                      child: ExpensesList(
+                    expenses: _registeredExpenses,
+                    onDismissExpense: _removeExpense,
+                  )),
+                ],
+              )
+            : const Center(
+                child: Text("No expenses found. Start adding new expenses!"),
+              ));
   }
 }
