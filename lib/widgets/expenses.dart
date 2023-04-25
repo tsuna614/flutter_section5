@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/expense.dart';
 import 'expenses_list/expenses_list.dart';
 import './new_expense.dart';
+import './chart/chart.dart';
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
@@ -77,12 +78,7 @@ class _ExpensesState extends State<Expenses> {
         body: _registeredExpenses.isNotEmpty
             ? Column(
                 children: [
-                  Container(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                      child: const Text(
-                        "The chart",
-                        style: TextStyle(fontSize: 20),
-                      )),
+                  Chart(expenses: _registeredExpenses),
                   Expanded(
                       child: ExpensesList(
                     expenses: _registeredExpenses,

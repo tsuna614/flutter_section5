@@ -17,9 +17,13 @@ class ExpenseItem extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(10),
-              alignment: Alignment.topLeft,
-              child: Text(expense.title),
+              padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+              alignment: Alignment.center,
+              child: Text(
+                expense.title,
+                style: Theme.of(context).textTheme.titleLarge,
+                // using custom textTheme in main.dart
+              ),
             ),
             const SizedBox(
               height: 20,
