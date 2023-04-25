@@ -79,15 +79,23 @@ class _ExpensesState extends State<Expenses> {
             ? Column(
                 children: [
                   Chart(expenses: _registeredExpenses),
+                  const Divider(
+                    height: 30,
+                  ),
                   Expanded(
-                      child: ExpensesList(
-                    expenses: _registeredExpenses,
-                    onDismissExpense: _removeExpense,
-                  )),
+                    child: ExpensesList(
+                      expenses: _registeredExpenses,
+                      onDismissExpense: _removeExpense,
+                    ),
+                  ),
                 ],
               )
-            : const Center(
-                child: Text("No expenses found. Start adding new expenses!"),
+            : Center(
+                child: Text(
+                  "No expenses found. Start adding new expenses!",
+                  style: Theme.of(context).textTheme.titleLarge,
+                  textAlign: TextAlign.center,
+                ),
               ));
   }
 }

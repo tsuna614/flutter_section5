@@ -12,6 +12,7 @@ class ExpenseItem extends StatelessWidget {
     // final Dateformat
 
     return Card(
+      margin: const EdgeInsets.all(10),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
