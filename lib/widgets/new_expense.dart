@@ -86,102 +86,113 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextField(
-            controller: _titleController,
-            maxLength: 50,
-            decoration: const InputDecoration(
-              label: Text('Title'),
-            ),
-          ),
-          Row(
+    final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
+    // print(MediaQuery.of(context)
+    //     .viewInsets
+    //     .bottom); // size of bottom keyboard when typing
+    // print(MediaQuery.of(context).size.height); // size of entire screen
+    return SizedBox(
+      height: double.infinity,
+      child: SingleChildScrollView(
+        // disable the fullscreen of isScrollControlled of showModalBottomSheet of expenses.dart
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 48, 16, keyboardSpace + 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: TextField(
-                  controller: _amountController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    prefixText:
-                        '\$ ', // text nay se tu dong them vao khi nguoi dung click vao TextField, tuy nhien se khong duoc luu lai
-                    label: Text('Amount'),
-                  ),
+              TextField(
+                controller: _titleController,
+                maxLength: 50,
+                decoration: const InputDecoration(
+                  label: Text('Title'),
                 ),
               ),
-              // TextField khi duoc cho vao children cua Row phai bao trong Extended neu khong se bi loi (yea i don't get it either)
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  // align the contents to the right
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  // center the contents vertically
-                  children: [
-                    const SizedBox(
-                      width: 10,
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _amountController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        prefixText:
+                            '\$ ', // text nay se tu dong them vao khi nguoi dung click vao TextField, tuy nhien se khong duoc luu lai
+                        label: Text('Amount'),
+                      ),
                     ),
-                    Text((_selectedDate == null)
-                        ? "No date selected"
-                        : formatter.format(_selectedDate!)),
-                    // exclamation mark force dart to assume the variable to not be NULL
-                    IconButton(
-                      onPressed: _presentDatePicker,
-                      icon: const Icon(Icons.calendar_month),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
+                  ),
+                  // TextField khi duoc cho vao children cua Row phai bao trong Extended neu khong se bi loi (yea i don't get it either)
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      // align the contents to the right
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      // center the contents vertically
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text((_selectedDate == null)
+                            ? "No date selected"
+                            : formatter.format(_selectedDate!)),
+                        // exclamation mark force dart to assume the variable to not be NULL
+                        IconButton(
+                          onPressed: _presentDatePicker,
+                          icon: const Icon(Icons.calendar_month),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
               const SizedBox(
-                width: 10,
+                height: 20,
               ),
-              DropdownButton(
-                  value:
-                      _selectedCategory, // this will show a temporary category on the dropdown, instead of blank
-                  items: Category.values.map((data) {
-                    return DropdownMenuItem(
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  DropdownButton(
                       value:
-                          data, // pass the data into the value, which will be called in the onChanged function
-                      child: Text(data.name.toUpperCase()),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    if (_selectedCategory == null) {
-                      return; // if it's null return nothing
-                    }
-                    setState(() {
-                      _selectedCategory = value;
-                    });
-                  }),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              ElevatedButton(
-                onPressed: _submitExpenseData,
-                child: const Text('Save Expense'),
+                          _selectedCategory, // this will show a temporary category on the dropdown, instead of blank
+                      items: Category.values.map((data) {
+                        return DropdownMenuItem(
+                          value:
+                              data, // pass the data into the value, which will be called in the onChanged function
+                          child: Text(data.name.toUpperCase()),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        if (_selectedCategory == null) {
+                          return; // if it's null return nothing
+                        }
+                        setState(() {
+                          _selectedCategory = value;
+                        });
+                      }),
+                ],
               ),
-              const Spacer(),
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    // Navigator.pop(context) co nghia la close nguyen Widget build(BuildContext context)
-                  },
-                  child: const Text('Cancel')),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: _submitExpenseData,
+                    child: const Text('Save Expense'),
+                  ),
+                  const Spacer(),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        // Navigator.pop(context) co nghia la close nguyen Widget build(BuildContext context)
+                      },
+                      child: const Text('Cancel')),
+                ],
+              ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
