@@ -13,6 +13,10 @@ class ExpensesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      // 2 dong tren co tac dung khi quay ngang dt, neu khong co se bao loi
+      // ly do bao loi: ListView se lam nguyen cai list keo dai full man hinh,
       itemCount: expenses.length,
       itemBuilder: (ctx, index) => Dismissible(
         key: ValueKey(expenses[index]),

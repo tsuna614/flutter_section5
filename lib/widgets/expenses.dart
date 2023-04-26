@@ -64,6 +64,10 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    // print(MediaQuery.of(context).size.width);
+    // print(MediaQuery.of(context).size.height);
     return Scaffold(
         appBar: AppBar(
             title: const Text(
@@ -78,16 +82,32 @@ class _ExpensesState extends State<Expenses> {
         body: _registeredExpenses.isNotEmpty
             ? Column(
                 children: [
-                  Chart(expenses: _registeredExpenses),
-                  const Divider(
-                    height: 30,
-                  ),
-                  Expanded(
-                    child: ExpensesList(
-                      expenses: _registeredExpenses,
-                      onDismissExpense: _removeExpense,
+                  if (screenWidth < 600) ...[
+                    Chart(expenses: _registeredExpenses),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+                      color: Theme.of(context).dividerColor,
+                      height: 2,
                     ),
-                  ),
+                    Expanded(
+                      child: ExpensesList(
+                        expenses: _registeredExpenses,
+                        onDismissExpense: _removeExpense,
+                      ),
+                    ),
+                  ] else ...[
+                    Row(
+                      children: [
+                        Expanded(child: Chart(expenses: _registeredExpenses)),
+                        Expanded(
+                          child: ExpensesList(
+                            expenses: _registeredExpenses,
+                            onDismissExpense: _removeExpense,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ],
               )
             : Center(

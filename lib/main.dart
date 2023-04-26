@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
+
 import 'widgets/expenses.dart';
 
 var kColorScheme =
@@ -12,6 +14,11 @@ var kDarkColorScheme = ColorScheme.fromSeed(
 // dark mode
 
 void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  // ]).then((fn) {
+  // 4 lines above locks the app vertically (can't be rotated)
   runApp(
     MaterialApp(
       darkTheme: ThemeData.dark().copyWith(
@@ -44,10 +51,11 @@ void main() {
             ), // AppBar title's theme
         // to use textTheme: Text("abc", style: Theme.of(context).textTheme.titleLarge,),
       ),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       // themeMode: ThemeMode.system,
       //// auto switch theme to device's theme (dark/light), however this setting is default so you don't have to add
       home: const Expenses(),
     ),
   );
+  // });
 }
