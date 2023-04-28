@@ -28,6 +28,7 @@ class _ExpensesState extends State<Expenses> {
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
+        useSafeArea: true,
         isScrollControlled: true, // make the sheet fullscreen
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
@@ -70,6 +71,7 @@ class _ExpensesState extends State<Expenses> {
     // print(MediaQuery.of(context).size.height);
     return Scaffold(
         appBar: AppBar(
+            // centerTitle: false,
             title: const Text(
               "Flutter Expense Tracker",
             ),

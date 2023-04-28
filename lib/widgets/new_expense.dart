@@ -93,10 +93,12 @@ class _NewExpenseState extends State<NewExpense> {
     // print(MediaQuery.of(context).size.height); // size of entire screen
     return SizedBox(
       height: double.infinity,
-      child: SingleChildScrollView(
+      child:
+          // wrap in SizedBox with height infinity to make it full screen
+          SingleChildScrollView(
         // disable the fullscreen of isScrollControlled of showModalBottomSheet of expenses.dart
         child: Padding(
-          padding: EdgeInsets.fromLTRB(16, 48, 16, keyboardSpace + 16),
+          padding: EdgeInsets.fromLTRB(16, 16, 16, keyboardSpace + 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
